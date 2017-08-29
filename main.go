@@ -120,7 +120,7 @@ func (r *RateLimitedRoundTripper) RoundTrip(req *http.Request) (*http.Response, 
 	remoteIP := strings.Split(req.RemoteAddr, ":")[0]
 
 	log.Printf("request from [%s]\n", remoteIP)
-	if r.rateLimiter.GetLimit() == 0 {
+	if os.Getenv("RATE_LIMIT") == "0" {
 		var resp *http.Response
 		dat, errRead := ioutil.ReadFile("index.html")
 		if errRead != nil {

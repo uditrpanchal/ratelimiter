@@ -41,9 +41,6 @@ func NewStore(limit int) Store {
 
 	return store
 }
-func (s *InMemoryStore) GetSetLimit() int {
-	return s.limit
-}
 
 func newEntry(limit int) *entry {
 	fillRatePerSec := 1000 / limit

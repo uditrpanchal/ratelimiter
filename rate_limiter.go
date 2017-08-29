@@ -43,7 +43,3 @@ func (r *RateLimiter) GetStats() Stats {
 	}
 	return s
 }
-
-func (r *RateLimiter) GetLimit() int {
-	return r.store.GetLimit()
-}
