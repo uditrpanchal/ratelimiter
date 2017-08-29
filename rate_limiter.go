@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"./store"
+	"github.com/cloudfoundry-samples/ratelimit-service/store"
 )
 
 type Stats []Stat
