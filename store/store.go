@@ -14,6 +14,7 @@ const expireInSecs = 30 * time.Second
 type Store interface {
 	Increment(string) (int, error)
 	Stats() map[string]int
+	GetLimit() int
 }
 
 type InMemoryStore struct {
@@ -40,6 +41,9 @@ func NewStore(limit int) Store {
 
 	return store
 }
+func (s *InMemoryStore) GetSetLimit() int {
+	return s.limit
+}
 
 func newEntry(limit int) *entry {
 	fillRatePerSec := 1000 / limit
@@ -64,6 +68,9 @@ func (s *InMemoryStore) Increment(key string) (int, error) {
 	return int(v.bucket.Available()), nil
 }
 
+func (s *InMemoryStore) GetLimit() int {
+	return s.limit
+}
 func (s *InMemoryStore) get(key string) (*entry, bool) {
 	s.RLock()
 	defer s.RUnlock()

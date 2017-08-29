@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudfoundry-samples/ratelimit-service/store"
+	"./store"
 )
 
 type Stats []Stat
@@ -42,4 +42,8 @@ func (r *RateLimiter) GetStats() Stats {
 		})
 	}
 	return s
+}
+
+func (r *RateLimiter) GetLimit() int {
+	return r.store.GetLimit()
 }

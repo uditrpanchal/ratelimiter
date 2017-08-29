@@ -120,7 +120,23 @@ func (r *RateLimitedRoundTripper) RoundTrip(req *http.Request) (*http.Response, 
 	remoteIP := strings.Split(req.RemoteAddr, ":")[0]
 
 	log.Printf("request from [%s]\n", remoteIP)
-	if r.rateLimiter.ExceedsLimit(remoteIP) {
+	if r.rateLimiter.GetLimit() == 0 {
+		var resp *http.Response
+		dat, errRead := ioutil.ReadFile("index.html")
+		if errRead != nil {
+			resp = &http.Response{
+				StatusCode: 500,
+				Body:       ioutil.NopCloser(bytes.NewBuffer(dat)),
+			}
+		} else {
+			resp = &http.Response{
+				StatusCode: 200,
+				Body:       ioutil.NopCloser(bytes.NewBuffer(dat)),
+			}
+		}
+
+		return resp, nil
+	} else if r.rateLimiter.ExceedsLimit(remoteIP) {
 		resp := &http.Response{
 			StatusCode: 429,
 			Body:       ioutil.NopCloser(bytes.NewBufferString("Too many requests")),
